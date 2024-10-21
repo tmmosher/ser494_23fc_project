@@ -8,7 +8,6 @@ import os, csv
 def process_cvd_misinfo_data():
     data_path = os.getcwd() + '\\data_original\\'
     output_path = os.getcwd() + '\\data_processing'
-    print(data_path)
     csv_data = []
     with open(data_path + "cvd_misinfo_data.csv", 'r', encoding='utf-8') as csvfile:
         for row in csv.reader(csvfile):
@@ -36,5 +35,5 @@ def process_cvd_misinfo_data():
         writer.writerows(csv_data)
     print("COVID misinfo munging done")
 
-if __name__ == '__main__':
+def munge():
     process_cvd_misinfo_data()

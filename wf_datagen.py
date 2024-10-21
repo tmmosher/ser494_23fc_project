@@ -17,41 +17,48 @@ current_dir = os.getcwd()
 
 def get_data_cvd_misinfo(url):
     import requests
-    response = requests.get(url)
-    if response.status_code == 200:
-        import gzip
-        if not os.path.isdir(current_dir + "/data_original"):
-            os.makedirs(current_dir + "/data_original")
-        # save response content to file
-        with open(current_dir + "/data_original/cvd_misinfo_data.csv.gz", 'wb') as f:
-            f.write(response.content)
-        with open(current_dir + "/data_original/cvd_misinfo_data.csv.gz", 'rb') as f:
-            file_content = gzip.decompress(f.read())
-        with open (current_dir + "/data_original/cvd_misinfo_data.csv", 'wb') as f:
-            f.write(file_content)
-        print("Finished COVID misinfo download")
+    if not os.path.isdir(current_dir + "/data_original"):
+        os.makedirs(current_dir + "/data_original")
+    if not os.path.isfile(current_dir + "/data_original/cvd_misinfo_data.csv.gz"):
+        response = requests.get(url)
+        if response.status_code == 200:
+            import gzip
+            # save response content to file
+            if not os.path.isfile(current_dir + "/data_original/cvd_misinfo_data.csv.gz"):
+                with open(current_dir + "/data_original/cvd_misinfo_data.csv.gz", 'wb') as f:
+                    f.write(response.content)
+                with open(current_dir + "/data_original/cvd_misinfo_data.csv.gz", 'rb') as f:
+                    file_content = gzip.decompress(f.read())
+                with open (current_dir + "/data_original/cvd_misinfo_data.csv", 'wb') as f:
+                    f.write(file_content)
+                print("Finished COVID misinfo download")
+        else:
+            print("URL download request unsuccessful.")
     else:
-        print("URL download request unsuccessful.")
+        print("COVID misinformation files already present, skipping download.")
 
 def get_data_sharing_misinfo(url, val):
     # most of this code will be very similar until reading of the data
     import requests
-    response = requests.get(url)
-    if response.status_code == 200:
-        import pandas as pd
-        import pyreadstat
-        if not os.path.isdir(current_dir + "/data_original"):
-            os.makedirs(current_dir + "/data_original")
-        #download the original file as a .sav (we can keep it, but don't really need it)
-        with open(current_dir + f"/data_original/misinfo_study{val}.sav", 'wb') as f:
-            f.write(response.content)
-        #convert to a .csv for actual use later (mostly because I just don't want to learn a new format)
-        file_content = pd.read_spss(current_dir + f"/data_original/misinfo_study{val}.sav")
-        with open(current_dir + f"/data_original/misinfo_study{val}.csv", 'wb') as f:
-            file_content.to_csv(f, index=False)
-        print(f"Finished file {val}")
+    if not os.path.isdir(current_dir + "/data_original"):
+        os.makedirs(current_dir + "/data_original")
+    if not os.path.isfile(current_dir + f"/data_original/misinfo_study{val}.sav"):
+        response = requests.get(url)
+        if response.status_code == 200:
+            import pandas as pd
+            import pyreadstat
+            #download the original file as a .sav (we can keep it, but don't really need it)
+            with open(current_dir + f"/data_original/misinfo_study{val}.sav", 'wb') as f:
+                f.write(response.content)
+            #convert to a .csv for actual use later (mostly because I just don't want to learn a new format)
+            file_content = pd.read_spss(current_dir + f"/data_original/misinfo_study{val}.sav")
+            with open(current_dir + f"/data_original/misinfo_study{val}.csv", 'wb') as f:
+                file_content.to_csv(f, index=False)
+            print(f"Finished file {val}")
+        else:
+            print("URL download request unsuccessful.")
     else:
-        print("URL download request unsuccessful.")
+        print("Misinfo sharing files already present, skipping download.")
 
 def generate():
     # download and process all files
