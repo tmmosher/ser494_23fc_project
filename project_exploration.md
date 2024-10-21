@@ -72,7 +72,7 @@ Yes/No question indicating whether a participant had knowingly shared false info
 Many of the other columns are specific to the authors' study of psychopathy and shizotypal behavior. Out of scope for this analysis. 
 ## Row Exploration (taken from misinfo_study1)
 ### Row 576
-This row is interesting as it contains the oldest participant. Of course, all columns are filled (the study required every question be answered). He is quite conservative and has unknowingly shared false information. 
+This row is interesting as it contains the oldest participant. Of course, all columns are filled (the study required every question be answered). He is quite conservative and has unknowingly shared false information. Reasonable and representative data.
 ### Row 518
-This row similarly contains an elderly retired participant of similar age and political belief. He has similarly unknowingly shared misinformation online (wonder if that will be a pattern...)
+This row similarly contains an elderly retired participant of similar age and political belief. He has similarly unknowingly shared misinformation online (wonder if that will be a pattern...). Reasonable and representative data
 ## [Hashing Tool](https://emn178.github.io/online-tools/md5_checksum.html)
