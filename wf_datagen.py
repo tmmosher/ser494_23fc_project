@@ -54,11 +54,11 @@ def get_data_sharing_misinfo(url, val):
             file_content = pd.read_spss(current_dir + f"/data_original/misinfo_study{val}.sav")
             with open(current_dir + f"/data_original/misinfo_study{val}.csv", 'wb') as f:
                 file_content.to_csv(f, index=False)
-            print(f"Finished file {val}")
+            print(f"Finished misinformation sharing study file {val}")
         else:
             print("URL download request unsuccessful.")
     else:
-        print("Misinfo sharing files already present, skipping download.")
+        print(f"Misinfo sharing study {val} already present, skipping download.")
 
 def generate():
     # download and process all files
