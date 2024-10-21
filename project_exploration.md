@@ -35,6 +35,11 @@ Number of shares on Facebook
 Twitter post ID's including links to the video
 #### facebook_post_ids
 Facebook post ID's including links to the video
+## Row Exploration
+### Row 31
+Row 31 exhibits qualities of good data. Every column is valid and contains easily readable data from a well-known creator.
+### Row 54
+Row 54 exhibits qualities of very poor data. Relatively few columns are valid, and critical descriptors to be used as a key (i.e., channel_id) are missing. 
 
 ## Dataset Two
 ### Title: [Individual differences in sharing false political information on social media: deliberate and accidental sharing, motivations and positive schizotypy.](https://pmc.ncbi.nlm.nih.gov/articles/PMC11206957/)
@@ -65,5 +70,9 @@ Yes/No question indicating whether a participant had shared information online a
 Yes/No question indicating whether a participant had knowingly shared false information online
 #### Remainder
 Many of the other columns are specific to the authors' study of psychopathy and shizotypal behavior. Out of scope for this analysis. 
-
+## Row Exploration (taken from misinfo_study1)
+### Row 576
+This row is interesting as it contains the oldest participant. Of course, all columns are filled (the study required every question be answered). He is quite conservative and has unknowingly shared false information. 
+### Row 518
+This row similarly contains an elderly retired participant of similar age and political belief. He has similarly unknowingly shared misinformation online (wonder if that will be a pattern...)
 ## [Hashing Tool](https://emn178.github.io/online-tools/md5_checksum.html)
