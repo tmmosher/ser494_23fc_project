@@ -15,7 +15,6 @@ import os
 
 current_dir = os.getcwd()
 
-
 def get_data_cvd_misinfo(url):
     import requests
     response = requests.get(url)
