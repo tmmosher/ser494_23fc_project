@@ -54,7 +54,7 @@ def get_data_sharing_misinfo(url, val):
     else:
         print("URL download request unsuccessful.")
 
-if __name__ == "__main__":
+def generate():
     # download and process all files
     cvd_misinfo_url = "https://zenodo.org/records/4557828/files/covid-misinfo-videos.csv.gz?download=1"
     get_data_cvd_misinfo(cvd_misinfo_url)
