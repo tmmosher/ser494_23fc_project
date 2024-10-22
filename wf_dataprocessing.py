@@ -103,7 +103,7 @@ def process_misinfo_sharing():
                 row[8] = int(row[8])
             else:
                 row[8] = (int(re.search("[1-7]", row[8]).group()))
-
+        csv_data.sort(key=lambda x: x[3], reverse=True)
         columns = ["gender", "country", "education", "age", "occupation", "polit_ideo", "media_trust",
             "media_behavior", "med_share", "shared_found_later", "shared_knowing"]
         csv_data.insert(0, columns)
