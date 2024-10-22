@@ -36,7 +36,7 @@ def process_cvd_misinfo_data():
             writer.writerows(csv_data)
         print("COVID misinfo munging done")
     else:
-        print("Munged .csv already present. Please delete file before re-munging.")
+        print("Munged .csv already present for COVID misinfo study. Please delete file before re-munging.")
 
 def process_misinfo_sharing():
     data_path = os.getcwd() + '\\data_original\\'
@@ -49,7 +49,7 @@ def process_misinfo_sharing():
     Gender, country, education, age, occupation, poli_ideo, media_trust, 
     media_behavior, med_share, shared_found_later, shared_knowing
     """
-    if not os.path.isfile(output_path + f"\\processed_misinfo_sharing_combined.csv"):
+    if not os.path.isfile(output_path + "\\processed_misinfo_sharing_combined.csv"):
         csv_data = []
         with open(data_path + "misinfo_study1.csv", 'r', encoding='utf-8') as csvfile:
             csv_reader = csv.reader(csvfile)
@@ -57,30 +57,40 @@ def process_misinfo_sharing():
                 row = [row[0], row[2], row[4], row[5], row[6], row[7], row[8],
                        row[9], row[10], row[11], row[12]]
                 csv_data.append(row)
-            csv_data.remove(csv_data[0])
+            csv_data.pop(0)
         with open(data_path + "misinfo_study2.csv", 'r', encoding='utf-8') as csvfile:
             csv_reader = csv.reader(csvfile)
+            delete_index = len(csv_data)
             for row in csv_reader:
                 row = [row[0], row[3], row[5], row[6], row[7], row[8],
                        row[24], row[25], row[26], row[45], row[64]]
                 csv_data.append(row)
-            csv_data.remove(csv_data[0])
+            csv_data.pop(delete_index)
         with open(data_path + "misinfo_study3.csv", 'r', encoding='utf-8') as csvfile:
             csv_reader = csv.reader(csvfile)
+            delete_index = len(csv_data)
             for row in csv_reader:
                 row = [row[0], row[2], row[5], row[6], row[7], row[9],
                        row[32], row[33], row[34], row[35], row[36]]
                 csv_data.append(row)
-            csv_data.remove(csv_data[0])
+            csv_data.pop(delete_index)
         with open(data_path + "misinfo_study4.csv", 'r', encoding='utf-8') as csvfile:
             csv_reader = csv.reader(csvfile)
+            delete_index = len(csv_data)
             for row in csv_reader:
-                row = [row[2], row[4], row[7], row[8], row[9], row[11],
+                row = [row[2], row[4], row[6], row[7], row[8], row[10],
                        row[12], row[13], row[14], row[15], row[16]]
-            csv_data.remove(csv_data[0])
+                csv_data.append(row)
+            csv_data.pop(delete_index)
         columns = ["gender", "country", "education", "age", "occupation", "polit_ideo", "media_trust",
     "media_behavior", "med_share", "shared_found_later", "shared_knowing"]
         csv_data.insert(0, columns)
+        with open(output_path + "\\processed_misinfo_sharing_combined.csv", 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(csv_data)
+        print("Misinfo sharing munging done")
+    else:
+        print("Munged .csv already present for misinfo sharing study. Please delete file before re-munging.")
 
 def munge():
     process_cvd_misinfo_data()
