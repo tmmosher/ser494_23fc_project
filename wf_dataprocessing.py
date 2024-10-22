@@ -43,7 +43,9 @@ def process_misinfo_sharing():
     output_path = os.getcwd() + '\\data_processing'
     if not os.path.isdir(output_path):
         os.mkdir(output_path)
+
     # each misinfo study has unique column structure. To combine the data I want, I have to go over them all individually :/
+
     """
     Wanted structure for CSV file:
     Gender, country, education, age, occupation, poli_ideo, media_trust, 
@@ -51,7 +53,9 @@ def process_misinfo_sharing():
     """
     if not os.path.isfile(output_path + "\\processed_misinfo_sharing_combined.csv"):
         csv_data = []
+
         # collect data from individual studies for conglomeration
+
         with open(data_path + "misinfo_study1.csv", 'r', encoding='utf-8') as csvfile:
             csv_reader = csv.reader(csvfile)
             for row in csv_reader:
@@ -83,7 +87,9 @@ def process_misinfo_sharing():
                        row[12], row[13], row[14], row[15], row[16]]
                 csv_data.append(row)
             csv_data.pop(delete_index)
-        # remove text from ranked data
+
+        # remove text from numerical data
+
         import re
         for row in csv_data:
             row[3] = int(float(row[3]))
@@ -103,10 +109,19 @@ def process_misinfo_sharing():
                 row[8] = int(row[8])
             else:
                 row[8] = (int(re.search("[1-7]", row[8]).group()))
+
+        # sort by age for easier reading
+
         csv_data.sort(key=lambda x: x[3], reverse=True)
+
+        # add the columns back in for the final product
+
         columns = ["gender", "country", "education", "age", "occupation", "polit_ideo", "media_trust",
             "media_behavior", "med_share", "shared_found_later", "shared_knowing"]
         csv_data.insert(0, columns)
+
+        # write the file back out
+
         with open(output_path + "\\processed_misinfo_sharing_combined.csv", 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
             writer.writerows(csv_data)
