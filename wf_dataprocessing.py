@@ -51,6 +51,7 @@ def process_misinfo_sharing():
     """
     if not os.path.isfile(output_path + "\\processed_misinfo_sharing_combined.csv"):
         csv_data = []
+        # collect data from individual studies for conglomeration
         with open(data_path + "misinfo_study1.csv", 'r', encoding='utf-8') as csvfile:
             csv_reader = csv.reader(csvfile)
             for row in csv_reader:
@@ -82,8 +83,29 @@ def process_misinfo_sharing():
                        row[12], row[13], row[14], row[15], row[16]]
                 csv_data.append(row)
             csv_data.pop(delete_index)
+        # remove text from ranked data
+        import re
+        for row in csv_data:
+            row[3] = int(float(row[3]))
+            if re.match("^[1-7]$", row[5]):
+                row[5] = int(row[5])
+            else:
+                row[5] = (int(re.search("[1-7]", row[5]).group()))
+            if re.match("^[1-7]$", row[6]):
+                row[6] = int(row[6])
+            else:
+                row[6] = (int(re.search("[1-7]", row[6]).group()))
+            if re.match("^[1-7]$", row[7]):
+                row[7] = int(row[7])
+            else:
+                row[7] = (int(re.search("[1-7]", row[7]).group()))
+            if re.match("^[1-7]$", row[8]):
+                row[8] = int(row[8])
+            else:
+                row[8] = (int(re.search("[1-7]", row[8]).group()))
+
         columns = ["gender", "country", "education", "age", "occupation", "polit_ideo", "media_trust",
-    "media_behavior", "med_share", "shared_found_later", "shared_knowing"]
+            "media_behavior", "med_share", "shared_found_later", "shared_knowing"]
         csv_data.insert(0, columns)
         with open(output_path + "\\processed_misinfo_sharing_combined.csv", 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
