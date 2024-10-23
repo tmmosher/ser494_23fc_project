@@ -3,9 +3,7 @@ Author: Trenton Mosher
 Description: Compute summary statistics of data
 """
 
-import os, csv, numpy as np
-from statistics import median
-
+import os, csv
 
 def compute_summary_statistics():
     csv_data = check_files()
@@ -119,6 +117,44 @@ def check_files():
             csv_data.append(row)
     return csv_data
 
+def create_charts():
+    import matplotlib.pyplot as plt, pandas as pd
+    csv_data = check_files()
+    if not csv_data:
+        return None
+    csv_data.pop(0) # remove columns for processing
+    age_series = [x[3] for x in csv_data]
+    poli_series = [x[5] for x in csv_data]
+    media_series = [x[7] for x in csv_data]
+    age_pooli_corref = {
+        'age' : age_series,
+        'politi_ideo' : poli_series
+    }
+    age_media_corref = {
+        'age' : age_series,
+        'media_trust' : media_series
+    }
+    poli_media_corref = {
+        'politi_ideo' : poli_series,
+        'media_trust' : media_series
+    }
+    age_poli = pd.DataFrame(age_pooli_corref, columns=['age', 'politi_ideo'])
+    age_media = pd.DataFrame(age_media_corref, columns=['age', 'media_trust'])
+    poli_media = pd.DataFrame(poli_media_corref, columns=['politi_ideo', 'media_trust'])
+    if not os.path.isdir(os.getcwd() + "\\visuals"):
+        os.mkdir(os.getcwd() + "\\visuals")
+    # age and political ideology
+    plt.scatter(age_poli['age'], age_poli['politi_ideo'])
+    plt.savefig(os.getcwd() + "\\visuals\\age_politi.png")
+    # age and media trust
+    plt.scatter(age_media['age'], age_media['media_trust'])
+    plt.savefig(os.getcwd() + "\\visuals\\age_media.png")
+    # political ideology and media trust
+    plt.scatter(poli_media['politi_ideo'], poli_media['media_trust'])
+    plt.savefig(os.getcwd() + "\\visuals\\politi_media.png")
+
+
 def visualize():
     compute_summary_statistics()
     correlation_generation()
+    create_charts()
