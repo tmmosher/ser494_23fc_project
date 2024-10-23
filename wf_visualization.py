@@ -4,6 +4,8 @@ Description: Compute summary statistics of data
 """
 
 import os, csv
+from matplotlib.ticker import MaxNLocator
+
 
 def compute_summary_statistics():
     csv_data = check_files()
@@ -93,7 +95,7 @@ def correlation_generation():
     csv_data.pop(0) # remove columns for processing
     age_series = [x[3] for x in csv_data]
     poli_series = [x[5] for x in csv_data]
-    media_series = [x[7] for x in csv_data]
+    media_series = [x[6] for x in csv_data]
     corref_data = {
         'age' : age_series,
         'politi_ideo' : poli_series,
@@ -123,9 +125,9 @@ def create_charts():
     if not csv_data:
         return None
     csv_data.pop(0) # remove columns for processing
-    age_series = [x[3] for x in csv_data]
-    poli_series = [x[5] for x in csv_data]
-    media_series = [x[7] for x in csv_data]
+    age_series = [int(x[3]) for x in csv_data]
+    poli_series = [int(x[5]) for x in csv_data]
+    media_series = [int(x[6]) for x in csv_data]
     age_pooli_corref = {
         'age' : age_series,
         'politi_ideo' : poli_series
@@ -136,7 +138,7 @@ def create_charts():
     }
     poli_media_corref = {
         'politi_ideo' : poli_series,
-        'media_trust' : media_series
+        'media_trust' : media_series,
     }
     age_poli = pd.DataFrame(age_pooli_corref, columns=['age', 'politi_ideo'])
     age_media = pd.DataFrame(age_media_corref, columns=['age', 'media_trust'])
@@ -144,15 +146,29 @@ def create_charts():
     if not os.path.isdir(os.getcwd() + "\\visuals"):
         os.mkdir(os.getcwd() + "\\visuals")
     # age and political ideology
-    plt.scatter(age_poli['age'], age_poli['politi_ideo'])
-    plt.savefig(os.getcwd() + "\\visuals\\age_politi.png")
+    ap_fig, ap_ax = plt.subplots()
+    ap_ax.set(title="Age v. Political Ideology",
+              xlabel='Political Ideology',
+              ylabel='Age',)
+    ap_ax.scatter(age_poli['politi_ideo'], age_poli['age'])
+    ap_fig.savefig(os.getcwd() + "\\visuals\\age_politi.png")
     # age and media trust
-    plt.scatter(age_media['age'], age_media['media_trust'])
-    plt.savefig(os.getcwd() + "\\visuals\\age_media.png")
+    am_fig, am_ax = plt.subplots()
+    am_ax.set(title="Age v. Media Trust",
+              xlabel='Media Trust',
+              ylabel='Age')
+    am_ax.xaxis.set_major_locator(MaxNLocator(integer=True)) # forces integer plots
+    am_ax.scatter(age_media['media_trust'], age_media['age'])
+    am_fig.savefig(os.getcwd() + "\\visuals\\age_media.png")
     # political ideology and media trust
-    plt.scatter(poli_media['politi_ideo'], poli_media['media_trust'])
-    plt.savefig(os.getcwd() + "\\visuals\\politi_media.png")
-
+    pm_fig, pm_ax = plt.subplots()
+    pm_ax.set(title="Political Ideology v. Media Trust",
+              xlabel='Political Ideology',
+              ylabel='Media Trust')
+    pm_ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+    pm_ax.yaxis.set_major_locator(MaxNLocator(integer=True))
+    pm_ax.scatter(poli_media['politi_ideo'], poli_media['media_trust'], s=len(poli_media['politi_ideo']) * 0.1, alpha=0.10)
+    pm_fig.savefig(os.getcwd() + "\\visuals\\politi_media.png")
 
 def visualize():
     compute_summary_statistics()
