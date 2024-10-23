@@ -128,6 +128,8 @@ def create_charts():
     age_series = [int(x[3]) for x in csv_data]
     poli_series = [int(x[5]) for x in csv_data]
     media_series = [int(x[6]) for x in csv_data]
+    shared_found_later = [x[9] for x in csv_data]
+    education_stats = [x[2] for x in csv_data]
     age_pooli_corref = {
         'age' : age_series,
         'politi_ideo' : poli_series
@@ -169,6 +171,26 @@ def create_charts():
     pm_ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     pm_ax.scatter(poli_media['politi_ideo'], poli_media['media_trust'], s=len(poli_media['politi_ideo']) * 0.1, alpha=0.10)
     pm_fig.savefig(os.getcwd() + "\\visuals\\politi_media.png")
+
+    # qualitative
+    # shared_found_later
+    sh_fig, sh_ax = plt.subplots()
+    sh_ax.set(title="Histogram of Whether Participants Unknowingly Shared Misinformation",
+              xlabel='Shared Misinformation',
+              ylabel='# of Participants')
+    sh_ax.hist(shared_found_later)
+    sh_fig.savefig(os.getcwd() + "\\visuals\\shared_found_later.png")
+    # education
+    edu_fig, edu_ax = plt.subplots()
+    edu_ax.set(title="Highest Achieved Education Level",
+               xlabel='Education Level',
+               ylabel='# of Participants')
+    edu_ax.tick_params(axis='x', labelrotation=15)
+    plt.rcParams["font.size"] = 20
+    plt.tight_layout()
+    edu_ax.hist(education_stats)
+    edu_fig.savefig(os.getcwd() + "\\visuals\\education_stats.png")
+
 
 def visualize():
     compute_summary_statistics()
