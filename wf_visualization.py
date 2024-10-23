@@ -8,17 +8,9 @@ from statistics import median
 
 
 def compute_summary_statistics():
-    if not os.path.isdir(os.getcwd() + "\\data_processing") or not os.path.isfile(os.getcwd() + "\\data_processing\\processed_misinfo_sharing_combined.csv"):
-        print("Failed to find processed data files")
+    csv_data = check_files()
+    if not csv_data:
         return None
-    csv_data = []
-
-    # extract csv data
-
-    with open(os.getcwd() + "\\data_processing\\processed_misinfo_sharing_combined.csv", "r") as file:
-        csv_reader = csv.reader(file)
-        for row in csv_reader:
-            csv_data.append(row)
 
     """
     Chosen summary statistics:
@@ -94,3 +86,27 @@ def compute_summary_statistics():
         file.write(f"Quantitative\nage: Minimum: {age_stats['min']}, Maximum: {age_stats['max']}, Median: {age_stats["median"]}.\n")
         file.write(f"politi_ideo: Minimum: {politi_ideo_stats['min']}, Maximum: {politi_ideo_stats['max']}, Median: {politi_ideo_stats["median"]}.\n")
         file.write(f"media_trust: Minimum: {media_trust_stats['min']}, Maximum: {media_trust_stats['max']}, Median: {media_trust_stats['median']}.\n")
+
+def correlation_generation():
+    import numpy as np
+    csv_data = check_files()
+    if not csv_data:
+        return None
+    csv_data.pop(0) # remove columns for processing
+    age_series = np.array([x[3] for x in csv_data])
+    poli_series = np.array([x[5] for x in csv_data])
+    media_series = np.array([x[7] for x in csv_data])
+
+
+def check_files():
+    if not os.path.isdir(os.getcwd() + "\\data_processing") or not os.path.isfile(
+            os.getcwd() + "\\data_processing\\processed_misinfo_sharing_combined.csv"):
+        print("Failed to find processed data files")
+        return None
+    csv_data = []
+    # extract csv data
+    with open(os.getcwd() + "\\data_processing\\processed_misinfo_sharing_combined.csv", "r") as file:
+        csv_reader = csv.reader(file)
+        for row in csv_reader:
+            csv_data.append(row)
+    return csv_data
