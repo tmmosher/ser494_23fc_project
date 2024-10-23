@@ -88,15 +88,23 @@ def compute_summary_statistics():
         file.write(f"media_trust: Minimum: {media_trust_stats['min']}, Maximum: {media_trust_stats['max']}, Median: {media_trust_stats['median']}.\n")
 
 def correlation_generation():
-    import numpy as np
+    import pandas as pd
     csv_data = check_files()
     if not csv_data:
         return None
     csv_data.pop(0) # remove columns for processing
-    age_series = np.array([x[3] for x in csv_data])
-    poli_series = np.array([x[5] for x in csv_data])
-    media_series = np.array([x[7] for x in csv_data])
-
+    age_series = [x[3] for x in csv_data]
+    poli_series = [x[5] for x in csv_data]
+    media_series = [x[7] for x in csv_data]
+    corref_data = {
+        'age' : age_series,
+        'politi_ideo' : poli_series,
+        'media_trust' : media_series
+    }
+    df = pd.DataFrame(corref_data, columns=['age', 'politi_ideo', 'media_trust'])
+    output_matrix = df.corr()
+    with open(os.getcwd() + "\\data_processing\\correlations.txt", mode='w', encoding='utf-8') as file:
+        file.write(output_matrix.to_string())
 
 def check_files():
     if not os.path.isdir(os.getcwd() + "\\data_processing") or not os.path.isfile(
@@ -110,3 +118,7 @@ def check_files():
         for row in csv_reader:
             csv_data.append(row)
     return csv_data
+
+def visualize():
+    compute_summary_statistics()
+    correlation_generation()
