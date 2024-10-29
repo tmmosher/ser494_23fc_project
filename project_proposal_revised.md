@@ -27,8 +27,8 @@ The wf_dataprocessing.py script converts the file to a CSV and then strips the u
 indicated that such a methodology is a misuse of the study. 
 #### Research Objectives:
     - RO1: To describe the trends within the participants on how trust in news on social media related to incidents of accidentally sharing misinformation.
-    - R02: To predict the status of whether a person has unknowingly shared misinformation based on political ideology.
-    - R03: To defend the model for performing the prediction in R02, I am restricting the data included in the regression to only encompass one factor. This ensures that the regression is explainable.
+    - R02: To predict the status of whether a person has unknowingly shared misinformation based on a combination of age and trust in social media.
+    - R03: To defend the model for performing the prediction in R02, I am restricting the data included in the regression to only encompass two factors. This ensures that the regression is explainable.
     - R04: To evaluate causal relationships implied in R02, synthesis of related works and other demographic factors such as age will be conducted.
 #### Background Knowledge: 
   - [Some background reading that clarifies potentially confounding factors, such as culture](https://misinforeview.hks.harvard.edu/article/who-is-afraid-of-fake-news-modeling-risk-perceptions-of-misinformation-in-142-countries/)
