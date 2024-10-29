@@ -16,7 +16,7 @@ While it may be nice to assume it's simply old people who are out of touch with 
 many peers my age (including myself) have fallen victim to misinformation, even if innocuous. Further, 
 I think it would be interesting to see if there's even a difference at all between age groups / sex, or if the 
 naturally trusting nature of most human interaction leads to a pretty stable output across the board. Further, trust in
-media sources and social media posts varies with age, experience, and education. While a previous study has been conducted
+media sources and social media posts varies with age, experience, education, and political ideology. While a previous study has been conducted
 on the topic, it was primarily focused on discerning whether psychopathic or schizotypal 
 tendencies were a causal factor in misinformation dissemination. 
 #### Data Sourcing:
@@ -26,7 +26,10 @@ false information. The wf_datagen.py script scrapes the OSF site for the SAV fil
 The wf_dataprocessing.py script converts the file to a CSV and then strips the unnecessary fields. The authors have not
 indicated that such a methodology is a misuse of the study. 
 #### Research Objectives:
-    1. 
+    - RO1: To describe the trends within the participants on how trust in news on social media related to incidents of accidentally sharing misinformation.
+    - R02: To predict the status of whether a person has unknowingly shared misinformation based on political ideology.
+    - R03: To defend the model for performing the prediction in R02, I am restricting the data included in the regression to only encompass one factor. This ensures that the regression is explainable.
+    - R04: To evaluate causal relationships implied in R02, synthesis of related works and other demographic factors such as age will be conducted.
 #### Background Knowledge: 
   - [Some background reading that clarifies potentially confounding factors, such as culture](https://misinforeview.hks.harvard.edu/article/who-is-afraid-of-fake-news-modeling-risk-perceptions-of-misinformation-in-142-countries/)
   - [A brief article going over some background information on AI misinfo](https://apnews.com/article/artificial-intelligence-davos-misinformation-disinformation-climate-change-106a1347ca9f987bf71da1f86a141968)
