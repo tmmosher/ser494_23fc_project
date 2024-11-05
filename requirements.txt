@@ -1,0 +1,2 @@
+matplotlib~=3.9.2
+pyreadstat~=1.2.8
