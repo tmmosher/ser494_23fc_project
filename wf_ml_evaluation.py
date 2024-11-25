@@ -4,9 +4,13 @@ Description: Splits the data into two sets, trains the model, and evaluates it
 """
 import os
 
+import numpy as np
 
-def split_training(filepath, percent=0.8):
+
+def split_training(filepath, training_name="training", testing_name="testing", percent=0.8):
     """
+    :param testing_name:
+    :param training_name:
     :param filepath: file path to the CSV file to process
     :param percent: relative percentage of training data to test split
     :return: Tuple containing (training, test) data sets
@@ -14,10 +18,18 @@ def split_training(filepath, percent=0.8):
     # ensures that bad input doesn't mess up index calculation
     percent = 0.8 if percent > 1 or percent < 0 else percent
     # load csv file into memory, split, and return both data structures as a tuple
-    from wf_visualization import check_files
-    csv_data = check_files("processed_misinfo_sharing_combined.csv")
+    csv_data = get_processed_data(filepath)
     split_ind = int(len(csv_data) * percent)
-    return csv_data[split_ind:], csv_data[:split_ind]
+    # save data sets to file
+    save_dataset(csv_data[:split_ind], training_name)
+    save_dataset(csv_data[split_ind:], testing_name)
+    return csv_data[:split_ind], csv_data[split_ind:]
+
+def save_dataset(dataset, filename):
+    output_folder = os.getcwd() + "/models"
+    if not os.path.isdir(output_folder):
+        os.mkdir(output_folder)
+    np.save(filename, np.asarray(dataset))
 
 def get_processed_data(filename):
     import csv
@@ -30,5 +42,15 @@ def get_processed_data(filename):
     with open(os.getcwd() + f"\\data_processed\\{filename}", "r") as file:
         csv_reader = csv.reader(file)
         [csv_data.append(row) for row in csv_reader]
-    return [int(col) for val in csv_data for col in val]
+        csv_data.pop(0)
+    return [list(map(lambda a: int(a), row)) for row in csv_data]
 
+def generate_naive_model():
+    import wf_ml_training as tr
+    training, testing = split_training("processed_misinfo_sharing_combined.csv",
+                   training_name="naive_training", testing_name="naive_testing")
+    inputs = [[row[2], row[5]] for row in training]
+    print(inputs)
+
+if __name__ == "__main__":
+    generate_naive_model()

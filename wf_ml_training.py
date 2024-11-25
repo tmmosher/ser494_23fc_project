@@ -1,6 +1,6 @@
 """
 Author: Trenton Mosher
-Description: Trains the logistic regression model
+Description: Trains the logistic regression model(s)
 """
 import math
 
