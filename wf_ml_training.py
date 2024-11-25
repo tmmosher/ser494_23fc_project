@@ -10,7 +10,7 @@ from wf_ml_evaluation import save_dataset
 def standardize(inputs):
     return (inputs - np.mean(inputs, axis=0)) / np.std(inputs, axis=0)
 
-def lg_naive_gradient_descent(inputs, outputs, alpha, filename):
+def lg_naive_gradient_descent(inputs: np.array, outputs: np.array, alpha, filename):
     """
     Runs the gradient descent algorithm for logistic regression
     :param filename: Filename for output. Do not include the extension, please.
@@ -22,6 +22,7 @@ def lg_naive_gradient_descent(inputs, outputs, alpha, filename):
     # standardize the inputs. Sources disagree on whether this is strictly necessary.
     # shouldn't be for my naive model, will be for my ridge & LASSO models. Might as well have it.
     inputs = standardize(inputs)
+    outputs = outputs.flatten()
     # tries to be pretty generic with the number of features as I'll need to vary those later
     weights = np.zeros(inputs.shape[1])
     intercept = 0 # wikipedia says this is the 'c' value in the logistic function from the notes.
@@ -34,10 +35,11 @@ def lg_naive_gradient_descent(inputs, outputs, alpha, filename):
         # get error
         loss = get_loss(outputs, prediction)
         # update weights and intercept
-        w0 = (1 / len(inputs)) * np.dot(inputs.T, prediction - outputs)
+        w0 = (1 / len(inputs)) * np.dot(inputs.T, (prediction - outputs))
         weights -= alpha * w0
         intercept -= alpha * (1 / len(inputs)) * np.sum(prediction - outputs)
-        if math.isclose(w0, 0, abs_tol=1e-6):
+        # need to fix this to allow for a list
+        if np.allclose(w0, 0, atol=1e-6):
             stop = True
     # do note, intercept is baked-in to the saved weights for retrieval from file if needed.
     # Must be stripped before the end of the array before use.
