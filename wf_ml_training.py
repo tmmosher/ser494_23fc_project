@@ -5,6 +5,7 @@ Description: Trains the logistic regression model(s)
 import math
 
 import numpy as np
+from wf_ml_evaluation import save_dataset
 
 def standardize(inputs):
     return (inputs - np.mean(inputs, axis=0)) / np.std(inputs, axis=0)
@@ -38,7 +39,9 @@ def lg_naive_gradient_descent(inputs, outputs, alpha, filename):
         intercept -= alpha * (1 / len(inputs)) * np.sum(prediction - outputs)
         if math.isclose(w0, 0, abs_tol=1e-6):
             stop = True
-    np.save(filename, np.append(weights, intercept))
+    # do note, intercept is baked-in to the saved weights for retrieval from file if needed.
+    # Must be stripped before the end of the array before use.
+    save_dataset(np.append(weights, intercept), filename)
     return weights, loss, intercept
 
 

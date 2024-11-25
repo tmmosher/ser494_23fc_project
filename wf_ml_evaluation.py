@@ -26,10 +26,10 @@ def split_training(filepath, training_name="training", testing_name="testing", p
     return csv_data[:split_ind], csv_data[split_ind:]
 
 def save_dataset(dataset, filename):
-    output_folder = os.getcwd() + "/models"
+    output_folder = os.getcwd() + "/models/"
     if not os.path.isdir(output_folder):
         os.mkdir(output_folder)
-    np.save(filename, np.asarray(dataset))
+    np.save(output_folder + filename, np.asarray(dataset))
 
 def get_processed_data(filename):
     import csv
@@ -49,8 +49,10 @@ def generate_naive_model():
     import wf_ml_training as tr
     training, testing = split_training("processed_misinfo_sharing_combined.csv",
                    training_name="naive_training", testing_name="naive_testing")
-    inputs = [[row[2], row[5]] for row in training]
-    print(inputs)
+    inputs = np.asarray([[row[2], row[5]] for row in training])
+    outputs = np.asarray([[row[8]] for row in training])
+    weights, loss, intercept = tr.lg_naive_gradient_descent(inputs, outputs, 0.01, "naive_model")
+    print("Loss: ", loss)
 
 if __name__ == "__main__":
     generate_naive_model()
