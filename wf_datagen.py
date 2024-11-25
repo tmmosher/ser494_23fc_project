@@ -46,11 +46,10 @@ def get_data_sharing_misinfo(url, val):
         response = requests.get(url)
         if response.status_code == 200:
             import pandas as pd
-            import pyreadstat
             #download the original file as a .sav (we can keep it, but don't really need it)
             with open(current_dir + f"/data_original/misinfo_study{val}.sav", 'wb') as f:
                 f.write(response.content)
-            #convert to a .csv for actual use later (mostly because I just don't want to learn a new format)
+            #convert to a .csv
             file_content = pd.read_spss(current_dir + f"/data_original/misinfo_study{val}.sav")
             with open(current_dir + f"/data_original/misinfo_study{val}.csv", 'wb') as f:
                 file_content.to_csv(f, index=False)
@@ -62,8 +61,8 @@ def get_data_sharing_misinfo(url, val):
 
 def generate():
     # download and process all files
-    cvd_misinfo_url = "https://zenodo.org/records/4557828/files/covid-misinfo-videos.csv.gz?download=1"
-    get_data_cvd_misinfo(cvd_misinfo_url)
+    #cvd_misinfo_url = "https://zenodo.org/records/4557828/files/covid-misinfo-videos.csv.gz?download=1"
+    #get_data_cvd_misinfo(cvd_misinfo_url)
     osf_summ_data_1 = "https://osf.io/download/6pdxw/"
     get_data_sharing_misinfo(osf_summ_data_1, 1)
     osf_summ_data_2 = "https://osf.io/download/6cj7t/"

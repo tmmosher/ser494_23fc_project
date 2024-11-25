@@ -103,7 +103,7 @@ def correlation_generation():
     }
     df = pd.DataFrame(corref_data, columns=['age', 'politi_ideo', 'media_trust'])
     output_matrix = df.corr()
-    with open(os.getcwd() + "\\data_processing\\correlations.txt", mode='w', encoding='utf-8') as file:
+    with open(os.getcwd() + "/data_processing/correlations.txt", mode='w', encoding='utf-8') as file:
         file.write(output_matrix.to_string())
 
 def check_files():
@@ -145,15 +145,15 @@ def create_charts():
     age_poli = pd.DataFrame(age_pooli_corref, columns=['age', 'politi_ideo'])
     age_media = pd.DataFrame(age_media_corref, columns=['age', 'media_trust'])
     poli_media = pd.DataFrame(poli_media_corref, columns=['politi_ideo', 'media_trust'])
-    if not os.path.isdir(os.getcwd() + "\\visuals"):
-        os.mkdir(os.getcwd() + "\\visuals")
+    if not os.path.isdir(os.getcwd() + "/visuals"):
+        os.mkdir(os.getcwd() + "/visuals")
     # age and political ideology
     ap_fig, ap_ax = plt.subplots()
     ap_ax.set(title="Age v. Political Ideology",
               xlabel='Political Ideology',
               ylabel='Age',)
     ap_ax.scatter(age_poli['politi_ideo'], age_poli['age'])
-    ap_fig.savefig(os.getcwd() + "\\visuals\\age_politi.png")
+    ap_fig.savefig(os.getcwd() + "/visuals/age_politi.png")
     # age and media trust
     am_fig, am_ax = plt.subplots()
     am_ax.set(title="Age v. Media Trust",
@@ -161,7 +161,7 @@ def create_charts():
               ylabel='Age')
     am_ax.xaxis.set_major_locator(MaxNLocator(integer=True)) # forces integer plots
     am_ax.scatter(age_media['media_trust'], age_media['age'])
-    am_fig.savefig(os.getcwd() + "\\visuals\\age_media.png")
+    am_fig.savefig(os.getcwd() + "/visuals/age_media.png")
     # political ideology and media trust
     pm_fig, pm_ax = plt.subplots()
     pm_ax.set(title="Political Ideology v. Media Trust",
@@ -170,7 +170,7 @@ def create_charts():
     pm_ax.xaxis.set_major_locator(MaxNLocator(integer=True))
     pm_ax.yaxis.set_major_locator(MaxNLocator(integer=True))
     pm_ax.scatter(poli_media['politi_ideo'], poli_media['media_trust'], s=len(poli_media['politi_ideo']) * 0.1, alpha=0.10)
-    pm_fig.savefig(os.getcwd() + "\\visuals\\politi_media.png")
+    pm_fig.savefig(os.getcwd() + "/visuals/politi_media.png")
 
     # qualitative
     # shared_found_later
@@ -179,7 +179,7 @@ def create_charts():
               xlabel='Shared Misinformation',
               ylabel='# of Participants')
     sh_ax.hist(shared_found_later)
-    sh_fig.savefig(os.getcwd() + "\\visuals\\shared_found_later.png")
+    sh_fig.savefig(os.getcwd() + "/visuals/shared_found_later.png")
     # education
     edu_fig, edu_ax = plt.subplots()
     edu_ax.set(title="Highest Achieved Education Level",
@@ -189,7 +189,7 @@ def create_charts():
     plt.rcParams["font.size"] = 20
     plt.tight_layout()
     edu_ax.hist(education_stats)
-    edu_fig.savefig(os.getcwd() + "\\visuals\\education_stats.png")
+    edu_fig.savefig(os.getcwd() + "/visuals/education_stats.png")
 
 
 def visualize():

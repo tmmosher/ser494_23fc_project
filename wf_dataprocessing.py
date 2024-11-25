@@ -130,6 +130,6 @@ def process_misinfo_sharing():
         print("Munged .csv already present for misinfo sharing study. Please delete file before re-munging.")
 
 def munge():
-    process_cvd_misinfo_data()
+    #process_cvd_misinfo_data()
     process_misinfo_sharing()
 
