@@ -29,20 +29,20 @@ def compute_summary_statistics():
 
     # Check misinformation sharing stats
     for row in csv_data:
-        if row[8] not in quality_dict:
-            quality_dict[row[9]] = 1
+        if f"{row[8]}" not in quality_dict:
+            quality_dict[f"{row[8]}"] = 1
         else:
-            quality_dict[row[9]] += 1
-    freq_val_shared = "Yes" if quality_dict["Yes"] > quality_dict["No"] else "No"
-    freq_least_shared = "No" if quality_dict["Yes"] > quality_dict["No"] else "Yes"
+            quality_dict[f"{row[8]}"] += 1
+    freq_val_shared = "Yes" if quality_dict["1"] > quality_dict["0"] else "No"
+    freq_least_shared = "No" if quality_dict["1"] > quality_dict["0"] else "Yes"
 
     # check education stats
     quality_dict.clear()
     for row in csv_data:
-        if row[2] not in quality_dict:
-            quality_dict[row[2]] = 1
+        if row[1] not in quality_dict:
+            quality_dict[row[1]] = 1
         else:
-            quality_dict[row[2]] += 1
+            quality_dict[row[1]] += 1
     freq_val_edu = ""
     freq_least_edu = ""
     categories_count = len(quality_dict.keys())
@@ -60,23 +60,23 @@ def compute_summary_statistics():
     media_trust_stats = {}
 
     # age
-    age_stats["max"] = max(csv_data, key=lambda x: x[3])[3]
-    age_stats["min"] = min(csv_data, key=lambda x: x[3])[3]
-    age_stats["median"] = csv_data[int(len(csv_data) / 2)][3] # the misinfo study file is already sorted by age, so pulling median from the middle is valid
+    age_stats["max"] = max(csv_data, key=lambda x: x[2])[2]
+    age_stats["min"] = min(csv_data, key=lambda x: x[2])[2]
+    age_stats["median"] = csv_data[int(len(csv_data) / 2)][2] # the misinfo study file is already sorted by age, so pulling median from the middle is valid
 
-    csv_data.sort(key=lambda x: x[5], reverse=True) # sort by political ideology
+    csv_data.sort(key=lambda x: x[4], reverse=True) # sort by political ideology
 
     # politi_ideo
-    politi_ideo_stats["max"] = max(csv_data, key=lambda x: x[5])[5]
-    politi_ideo_stats["min"] = min(csv_data, key=lambda x: x[5])[5]
-    politi_ideo_stats["median"] = csv_data[int(len(csv_data) / 2)][5]
+    politi_ideo_stats["max"] = max(csv_data, key=lambda x: x[4])[4]
+    politi_ideo_stats["min"] = min(csv_data, key=lambda x: x[4])[4]
+    politi_ideo_stats["median"] = csv_data[int(len(csv_data) / 2)][4]
 
     csv_data.sort(key=lambda x: x[6], reverse=True) # sort by trust level
 
     # media_trust
-    media_trust_stats["max"] = max(csv_data, key=lambda x: x[6])[6]
-    media_trust_stats["min"] = min(csv_data, key=lambda x: x[6])[6]
-    media_trust_stats["median"] = csv_data[int(len(csv_data) / 2)][6]
+    media_trust_stats["max"] = max(csv_data, key=lambda x: x[5])[5]
+    media_trust_stats["min"] = min(csv_data, key=lambda x: x[5])[5]
+    media_trust_stats["median"] = csv_data[int(len(csv_data) / 2)][5]
 
     # write output values
 
@@ -93,9 +93,9 @@ def correlation_generation():
     if not csv_data:
         return None
     csv_data.pop(0) # remove columns for processing
-    age_series = [x[3] for x in csv_data]
-    poli_series = [x[5] for x in csv_data]
-    media_series = [x[6] for x in csv_data]
+    age_series = [x[2] for x in csv_data]
+    poli_series = [x[4] for x in csv_data]
+    media_series = [x[5] for x in csv_data]
     corref_data = {
         'age' : age_series,
         'politi_ideo' : poli_series,
@@ -125,11 +125,11 @@ def create_charts():
     if not csv_data:
         return None
     csv_data.pop(0) # remove columns for processing
-    age_series = [int(x[3]) for x in csv_data]
-    poli_series = [int(x[5]) for x in csv_data]
-    media_series = [int(x[6]) for x in csv_data]
-    shared_found_later = [x[9] for x in csv_data]
-    education_stats = [x[2] for x in csv_data]
+    age_series = [int(x[2]) for x in csv_data]
+    poli_series = [int(x[4]) for x in csv_data]
+    media_series = [int(x[5]) for x in csv_data]
+    shared_found_later = [x[8] for x in csv_data]
+    education_stats = [x[1] for x in csv_data]
     age_pooli_corref = {
         'age' : age_series,
         'politi_ideo' : poli_series
