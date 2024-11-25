@@ -38,7 +38,7 @@ def lg_naive_gradient_descent(inputs, outputs, alpha, filename):
         intercept -= alpha * (1 / len(inputs)) * np.sum(prediction - outputs)
         if math.isclose(w0, 0, abs_tol=1e-6):
             stop = True
-    np.save(filename, weights)
+    np.save(filename, np.append(weights, intercept))
     return weights, loss, intercept
 
 
