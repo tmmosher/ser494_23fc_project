@@ -31,3 +31,4 @@ def get_processed_data(filename):
         csv_reader = csv.reader(file)
         [csv_data.append(row) for row in csv_reader]
     return [int(col) for val in csv_data for col in val]
+

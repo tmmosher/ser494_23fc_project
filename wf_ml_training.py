@@ -2,23 +2,22 @@
 Author: Trenton Mosher
 Description: Trains the logistic regression model
 """
+import math
 
 import numpy as np
 
 def standardize(inputs):
     return (inputs - np.mean(inputs, axis=0)) / np.std(inputs, axis=0)
 
-def lg_gradient_descent(inputs, outputs, alpha, iterations=500):
+def lg_naive_gradient_descent(inputs, outputs, alpha, filename):
     """
     Runs the gradient descent algorithm for logistic regression
+    :param filename: Filename for output. Do not include the extension, please.
     :param inputs: input as numpy array
     :param outputs: outputs as numpy array
     :param alpha: learning rate. not stable at high values
-    :param iterations: number of desired iterations. Minimum 100
-    :return: tuple containing (weights, total_loss)
+    :return: tuple containing (weights, total_loss, intercept) for prediction. Saves the weights to file.
     """
-    # baseline number of iterations
-    iterations = 100 if iterations < 100 else iterations
     # standardize the inputs. Sources disagree on whether this is strictly necessary.
     # shouldn't be for my naive model, will be for my ridge & LASSO models. Might as well have it.
     inputs = standardize(inputs)
@@ -28,14 +27,19 @@ def lg_gradient_descent(inputs, outputs, alpha, iterations=500):
     # While the notes say that this value is unnecessary (and it may usually be?) wikipedia and
     # other internet sources use it, so I'm keeping it
     loss = 0
-    for i in range(iterations):
+    stop = False
+    while not stop:
         prediction = logistic_function(np.dot(inputs, weights) + intercept)
         # get error
         loss = get_loss(outputs, prediction)
         # update weights and intercept
-        weights -= alpha * (1 / len(inputs)) * np.dot(inputs.T, prediction - outputs)
+        w0 = (1 / len(inputs)) * np.dot(inputs.T, prediction - outputs)
+        weights -= alpha * w0
         intercept -= alpha * (1 / len(inputs)) * np.sum(prediction - outputs)
-    return weights, loss
+        if math.isclose(w0, 0, abs_tol=1e-6):
+            stop = True
+    np.save(filename, weights)
+    return weights, loss, intercept
 
 
 def logistic_function(x):
