@@ -21,13 +21,13 @@ def split_training(filepath, percent=0.8):
 
 def get_processed_data(filename):
     import csv
-    if not os.path.isdir(os.getcwd() + "\\data_processing") or not os.path.isfile(
-            os.getcwd() + f"\\data_processing\\{filename}"):
+    if not os.path.isdir(os.getcwd() + "\\data_processed") or not os.path.isfile(
+            os.getcwd() + f"\\data_processed\\{filename}"):
         print("Failed to find processed data files")
         return None
     csv_data = []
     # extract csv data
-    with open(os.getcwd() + f"\\data_processing\\{filename}", "r") as file:
+    with open(os.getcwd() + f"\\data_processed\\{filename}", "r") as file:
         csv_reader = csv.reader(file)
         [csv_data.append(row) for row in csv_reader]
     return [int(col) for val in csv_data for col in val]

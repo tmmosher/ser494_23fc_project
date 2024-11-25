@@ -9,7 +9,7 @@ from idlelib.pyparse import trans
 
 def process_cvd_misinfo_data():
     data_path = os.getcwd() + '\\data_original\\'
-    output_path = os.getcwd() + '\\data_processing'
+    output_path = os.getcwd() + '\\data_processed'
     if not os.path.isdir(output_path):
         os.mkdir(output_path)
     if not os.path.isfile(output_path + '\\processed_cvs_misinfo.csv'):
@@ -42,7 +42,7 @@ def process_cvd_misinfo_data():
 
 def process_misinfo_sharing():
     data_path = os.getcwd() + '/data_original/'
-    output_path = os.getcwd() + '/data_processing'
+    output_path = os.getcwd() + '/data_processed'
     if not os.path.isdir(output_path):
         os.mkdir(output_path)
 

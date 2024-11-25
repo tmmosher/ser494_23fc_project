@@ -80,7 +80,7 @@ def compute_summary_statistics():
 
     # write output values
 
-    with open(os.getcwd() + "\\data_processing\\summary.txt", "w", encoding='utf-8') as file:
+    with open(os.getcwd() + "\\data_processed\\summary.txt", "w", encoding='utf-8') as file:
         file.write(f"Summary Statistics:\nCategorical\n'shared_found_later': 2 Categories. Most frequent was '{freq_val_shared}'. Least frequent was '{freq_least_shared}'.\n")
         file.write(f"education: {categories_count} Categories. Most frequent was '{freq_val_edu}'. Least frequent was '{freq_least_edu}'.\n")
         file.write(f"Quantitative\nage: Minimum: {age_stats['min']}, Maximum: {age_stats['max']}, Median: {age_stats["median"]}.\n")
@@ -103,18 +103,18 @@ def correlation_generation():
     }
     df = pd.DataFrame(corref_data, columns=['age', 'politi_ideo', 'media_trust'])
     output_matrix = df.corr()
-    with open(os.getcwd() + "/data_processing/correlations.txt", mode='w', encoding='utf-8') as file:
+    with open(os.getcwd() + "/data_processed/correlations.txt", mode='w', encoding='utf-8') as file:
         file.write(output_matrix.to_string())
 
 # usually filename will be "processed_misinfo_sharing_combined.csv" for this
 def check_files(filename):
-    if not os.path.isdir(os.getcwd() + "\\data_processing") or not os.path.isfile(
-            os.getcwd() + f"\\data_processing\\{filename}"):
+    if not os.path.isdir(os.getcwd() + "\\data_processed") or not os.path.isfile(
+            os.getcwd() + f"\\data_processed\\{filename}"):
         print("Failed to find processed data files")
         return None
     csv_data = []
     # extract csv data
-    with open(os.getcwd() + f"\\data_processing\\{filename}", "r") as file:
+    with open(os.getcwd() + f"\\data_processed\\{filename}", "r") as file:
         csv_reader = csv.reader(file)
         for row in csv_reader:
             csv_data.append(row)
