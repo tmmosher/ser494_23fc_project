@@ -8,7 +8,7 @@ from matplotlib.ticker import MaxNLocator
 
 
 def compute_summary_statistics():
-    csv_data = check_files()
+    csv_data = check_files("processed_misinfo_sharing_combined.csv")
     if not csv_data:
         return None
 
@@ -89,7 +89,7 @@ def compute_summary_statistics():
 
 def correlation_generation():
     import pandas as pd
-    csv_data = check_files()
+    csv_data = check_files("processed_misinfo_sharing_combined.csv")
     if not csv_data:
         return None
     csv_data.pop(0) # remove columns for processing
@@ -106,14 +106,15 @@ def correlation_generation():
     with open(os.getcwd() + "/data_processing/correlations.txt", mode='w', encoding='utf-8') as file:
         file.write(output_matrix.to_string())
 
-def check_files():
+# usually filename will be "processed_misinfo_sharing_combined.csv" for this
+def check_files(filename):
     if not os.path.isdir(os.getcwd() + "\\data_processing") or not os.path.isfile(
-            os.getcwd() + "\\data_processing\\processed_misinfo_sharing_combined.csv"):
+            os.getcwd() + f"\\data_processing\\{filename}"):
         print("Failed to find processed data files")
         return None
     csv_data = []
     # extract csv data
-    with open(os.getcwd() + "\\data_processing\\processed_misinfo_sharing_combined.csv", "r") as file:
+    with open(os.getcwd() + f"\\data_processing\\{filename}", "r") as file:
         csv_reader = csv.reader(file)
         for row in csv_reader:
             csv_data.append(row)
@@ -121,7 +122,7 @@ def check_files():
 
 def create_charts():
     import matplotlib.pyplot as plt, pandas as pd
-    csv_data = check_files()
+    csv_data = check_files("processed_misinfo_sharing_combined.csv")
     if not csv_data:
         return None
     csv_data.pop(0) # remove columns for processing
