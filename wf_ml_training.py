@@ -38,7 +38,6 @@ def lg_naive_gradient_descent(inputs: np.array, outputs: np.array, alpha, filena
         w0 = (1 / len(inputs)) * np.dot(inputs.T, (prediction - outputs))
         weights -= alpha * w0
         intercept -= alpha * (1 / len(inputs)) * np.sum(prediction - outputs)
-        # need to fix this to allow for a list
         if np.allclose(w0, 0, atol=1e-6):
             stop = True
     # do note, intercept is baked-in to the saved weights for retrieval from file if needed.
