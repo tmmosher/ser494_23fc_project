@@ -49,7 +49,7 @@ def generate_naive_model():
     import wf_ml_training as tr
     training, testing = split_training("processed_misinfo_sharing_combined.csv",
                    training_name="naive_training", testing_name="naive_testing")
-    inputs = np.asarray([[row[2], row[5]] for row in training])
+    inputs = np.asarray([row[:8] for row in training])
     outputs = np.asarray([[row[8]] for row in training])
     weights, loss, intercept = tr.lg_naive_gradient_descent(inputs, outputs, 0.01, "naive_model")
     print("Loss: ", loss)
