@@ -12,7 +12,7 @@ import numpy as np
 import wf_ml_training as tr
 
 filepath = os.getcwd() + "/models/"
-outpath = os.getcwd() + "/evaluations/"
+outpath = os.getcwd() + "/evaluation/"
 
 def predict(testing):
     """
