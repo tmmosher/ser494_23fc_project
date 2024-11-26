@@ -34,7 +34,7 @@ def save_dataset(dataset, filename):
     np.save(output_folder + filename, np.asarray(dataset))
 
 
-def save_model(data, intercept, filename, is_sklearn=False, model=None):
+def save_model(data, loss, intercept, filename, is_sklearn=False, model=None):
     import pickle
     output_folder = os.getcwd() + "/models/"
     if not os.path.isdir(output_folder):
@@ -42,6 +42,7 @@ def save_model(data, intercept, filename, is_sklearn=False, model=None):
     if not is_sklearn:
         obj = {
             "weights": data,
+            "loss": loss,
             "intercept": intercept
         }
         with open(output_folder + filename+".pkl", 'wb') as f:
@@ -90,4 +91,4 @@ if __name__ == "__main__":
     generate_naive_model(inputs, outputs)
     generate_lasso_model(inputs, outputs)
     generate_ridge_model(inputs, outputs)
-    wf_ml_prediction.predict(testing)
+    print(wf_ml_prediction.predict(testing))

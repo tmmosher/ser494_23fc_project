@@ -40,7 +40,7 @@ def lg_naive_gradient_descent(inputs: np.array, outputs: np.array, alpha, filena
         intercept -= alpha * (1 / len(inputs)) * np.sum(prediction - outputs)
         if np.allclose(w0, 0, atol=1e-6):
             stop = True
-    save_model(weights, intercept, filename)
+    save_model(weights, loss, intercept, filename)
     return weights, loss, intercept
 
 
@@ -77,7 +77,7 @@ def lg_sklearn_lasso_regression(inputs, outputs, filename):
     inputs = standardize(inputs)
     outputs = outputs.flatten()
     model.fit(inputs, outputs)
-    save_model(model.coef_[0], model.intercept_[0], filename, is_sklearn=True, model=model)
+    save_model(model.coef_[0], 0, model.intercept_[0], filename, is_sklearn=True, model=model)
     return model.coef_[0], model.intercept_[0]
 
 
@@ -93,5 +93,5 @@ def lg_sklearn_ridge_regression(inputs, outputs, filename):
     inputs = standardize(inputs)
     outputs = outputs.flatten()
     model.fit(inputs, outputs)
-    save_model(model.coef_[0], model.intercept_[0], filename, is_sklearn=True, model=model)
+    save_model(model.coef_[0], 0, model.intercept_[0], filename, is_sklearn=True, model=model)
     return model.coef_[0], model.intercept_[0]
