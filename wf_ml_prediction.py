@@ -27,24 +27,32 @@ def predict(testing):
 
 def predict_naive(inputs, outputs):
     import wf_ml_training as tr
+    # unpack model
     if not os.path.isdir(filepath):
         return
     with open(filepath + "naive_model.pkl", 'rb') as f:
         model = pickle.load(f)
     weights = model["weights"]
     intercept = model["intercept"]
+    # run model
     accuracy = []
+    true_pos = []
+    false_pos = []
     val = np.dot(inputs, weights) + intercept
     y = tr.logistic_function(val)
     prediction = (y > 0.5).astype(int)
+    # create prediction accuracy
     for i in range(len(prediction)):
         accuracy.append(prediction[i] == outputs[i])
+        true_pos.append(prediction[i] == 1 and outputs[i] == 1)
+        false_pos.append(prediction[i] == 1 and outputs[i] == 0)
+    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     accuracy_scores = float(sum(accuracy) / len(accuracy))
     if not os.path.isdir(outpath):
         os.mkdir(outpath)
-    with open(outpath + "summary.txt",'w') as f:
-        f.write(f"Lasso predictions | Score: {accuracy_scores} | Intercept: {float(intercept)}")
-    return accuracy_scores, float(intercept)
+    with open(outpath + "summary.txt",'a') as f:
+        f.write(f"Naive predictions\nScore: {accuracy_scores} | Precision: {precision}\n")
+    return accuracy_scores, precision
 
 
 def predict_lasso(inputs, outputs):
@@ -54,11 +62,20 @@ def predict_lasso(inputs, outputs):
         model = pickle.load(f)
     if not os.path.isdir(outpath):
         os.mkdir(outpath)
+    # run model (yes, there is a 'score' method, but I need FP / TPs
+    accuracy = []
+    true_pos = []
+    false_pos = []
+    predictions = model.predict(inputs)
+    for i in range(len(predictions)):
+        accuracy.append(predictions[i] == outputs[i])
+        true_pos.append(predictions[i] == 1 and outputs[i] == 1)
+        false_pos.append(predictions[i] == 1 and outputs[i] == 0)
+    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     score = model.score(inputs, outputs)
-    intercept = float(model.intercept_[0])
-    with open(outpath + "summary.txt",'w') as f:
-        f.write(f"Lasso predictions | Score: {score} | Intercept: {intercept}")
-    return score, intercept
+    with open(outpath + "summary.txt",'a') as f:
+        f.write(f"Lasso predictions\nScore: {score} | Precision: {precision}\n")
+    return score, precision
 
 
 def predict_ridge(inputs, outputs):
@@ -68,8 +85,16 @@ def predict_ridge(inputs, outputs):
         model = pickle.load(f)
     if not os.path.isdir(outpath):
         os.mkdir(outpath)
+    accuracy = []
+    true_pos = []
+    false_pos = []
+    predictions = model.predict(inputs)
+    for i in range(len(predictions)):
+        accuracy.append(predictions[i] == outputs[i])
+        true_pos.append(predictions[i] == 1 and outputs[i] == 1)
+        false_pos.append(predictions[i] == 1 and outputs[i] == 0)
+    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     score = model.score(inputs, outputs)
-    intercept = float(model.intercept_[0])
-    with open(outpath + "summary.txt",'w') as f:
-        f.write(f"Ridge predictions | Score: {score} | Intercept: {intercept}")
-    return score, intercept
+    with open(outpath + "summary.txt",'a') as f:
+        f.write(f"Ridge predictions\nScore: {score} | Precision: {precision}\n")
+    return score, precision
