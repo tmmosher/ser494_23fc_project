@@ -12,12 +12,18 @@ I chose accuracy as a fairly obvious metric for a classification model. We want
 an objective success rate for how good the model is, and accuracy provides that entirely.
 
 ### Metric 2
-**Name:** 
+**Name:** Precision
 
 **Choice Justification:** 
-
+Higher precision minimizes false positives, which is an important metric for ensuring that
+we don't flag innocent subjects for misinformation.
 
 ## Alternative Models
+### Alternative N
+**Construction:** TODO
+
+**Evaluation:** TODO
+
 ### Alternative N
 **Construction:** TODO
 

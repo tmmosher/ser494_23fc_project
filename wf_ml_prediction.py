@@ -22,7 +22,8 @@ def predict(testing):
     """
     inputs = np.asarray([row[:8] for row in testing])
     outputs = np.asarray([[row[8]] for row in testing])
-    return (predict_naive(inputs, outputs)), (predict_lasso(inputs, outputs)), (predict_ridge(inputs, outputs))
+    return ((predict_naive(inputs, outputs)), (predict_lasso(inputs, outputs)),
+            (predict_ridge(inputs, outputs))), (predict_random(inputs, outputs))
 
 
 def predict_naive(inputs, outputs):
@@ -51,7 +52,7 @@ def predict_naive(inputs, outputs):
     if not os.path.isdir(outpath):
         os.mkdir(outpath)
     with open(outpath + "summary.txt",'a') as f:
-        f.write(f"Naive predictions\nScore: {accuracy_scores} | Precision: {precision}\n")
+        f.write(f"Naive predictions\nAccuracy: {accuracy_scores} | Precision: {precision}\n")
     return accuracy_scores, precision
 
 
@@ -96,5 +97,26 @@ def predict_ridge(inputs, outputs):
     precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     score = model.score(inputs, outputs)
     with open(outpath + "summary.txt",'a') as f:
-        f.write(f"Ridge predictions\nScore: {score} | Precision: {precision}\n")
+        f.write(f"Ridge predictions\nAccuracy: {score} | Precision: {precision}\n")
     return score, precision
+
+
+def predict_random(inputs, outputs):
+    from random import random
+    if not os.path.isdir(filepath):
+        return
+    if not os.path.isdir(outpath):
+        os.mkdir(outpath)
+    accuracy = []
+    true_pos = []
+    false_pos = []
+    predictions = [1 if (random() > 0.5) else 0 for _ in range(len(inputs))]
+    for i in range(len(predictions)):
+        accuracy.append(predictions[i] == outputs[i])
+        true_pos.append(predictions[i] == 1 and outputs[i] == 1)
+        false_pos.append(predictions[i] == 1 and outputs[i] == 0)
+    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
+    accuracy = float(sum(accuracy) / len(accuracy))
+    with open(outpath + "summary.txt",'a') as f:
+        f.write(f"Ridge predictions\nAccuracy: {accuracy} | Precision: {precision}\n")
+    return accuracy, precision
