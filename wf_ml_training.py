@@ -5,7 +5,7 @@ Description: Trains the logistic regression model(s)
 from sklearn.linear_model import LogisticRegression
 
 import numpy as np
-from wf_ml_evaluation import save_dataset
+from wf_ml_evaluation import save_model
 
 def standardize(inputs):
     return (inputs - np.mean(inputs, axis=0)) / np.std(inputs, axis=0)
@@ -40,9 +40,7 @@ def lg_naive_gradient_descent(inputs: np.array, outputs: np.array, alpha, filena
         intercept -= alpha * (1 / len(inputs)) * np.sum(prediction - outputs)
         if np.allclose(w0, 0, atol=1e-6):
             stop = True
-    # do note, intercept is baked-in to the saved weights for retrieval from file if needed.
-    # Must be stripped before the end of the array before use.
-    save_dataset(np.append(weights, intercept), filename)
+    save_model(weights, intercept, filename)
     return weights, loss, intercept
 
 
@@ -75,10 +73,11 @@ def lg_sklearn_lasso_regression(inputs, outputs, filename):
     :param filename: Filename for output. Do not include the extension, please.
     :return: tuple containing (weights, intercept) for prediction. Saves the weights & intercept to file.
     """
-    model = LogisticRegression(penalty="l1", tol=1e-6)
+    model = LogisticRegression(penalty="l1", solver="liblinear",tol=1e-6)
     inputs = standardize(inputs)
+    outputs = outputs.flatten()
     model.fit(inputs, outputs)
-    save_dataset(np.append(model.coef_[0], model.intercept_[0]), filename)
+    save_model(model.coef_[0], model.intercept_[0], filename, is_sklearn=True, model=model)
     return model.coef_[0], model.intercept_[0]
 
 
@@ -92,6 +91,7 @@ def lg_sklearn_ridge_regression(inputs, outputs, filename):
     """
     model = LogisticRegression(penalty="l2", tol=1e-6)
     inputs = standardize(inputs)
+    outputs = outputs.flatten()
     model.fit(inputs, outputs)
-    save_dataset(np.append(model.coef_[0], model.intercept_[0]), filename)
+    save_model(model.coef_[0], model.intercept_[0], filename, is_sklearn=True, model=model)
     return model.coef_[0], model.intercept_[0]
