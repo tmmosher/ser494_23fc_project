@@ -115,7 +115,7 @@ def process_misinfo_sharing():
 
         # sort by age for easier reading
 
-        csv_data.sort(key=lambda x: x[2], reverse=True)
+        # csv_data.sort(key=lambda x: x[2], reverse=True)
 
         # add the columns back in for the final product
 

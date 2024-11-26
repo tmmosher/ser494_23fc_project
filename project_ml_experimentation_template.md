@@ -1,7 +1,7 @@
 #### SERX94: Experimentation
-#### TODO (title)
-#### TODO (author)
-#### TODO (date)
+#### The Death of Truth: Who is the Most Gullible?
+#### By Trenton Mosher
+#### 11/25/24
 
 
 ## Explainable Records

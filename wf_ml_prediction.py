@@ -3,14 +3,14 @@ Author: Trenton Mosher
 Description: Prediction suite for MS5. Takes three generated models
 and uses them for prediction.
 """
-
+import gc
 import os
 import pickle
+import time
 
 import numpy as np
 
-from sklearn.metrics import log_loss
-
+os.environ["NUMPY_EXPERIMENTAL_ARRAY_FUNCTION"] = "0"
 filepath = os.getcwd() + "/models/"
 outpath = os.getcwd() + "/evaluations/"
 
@@ -18,12 +18,15 @@ def predict(testing):
     """
     Tests all three models on the given set.
     :param testing: Testing data set
-    :return: a tuple containing (naive_score, lasso_score, ridge_score)
+    :return: a tuple containing scores for each model
     """
     inputs = np.asarray([row[:8] for row in testing])
     outputs = np.asarray([[row[8]] for row in testing])
-    return ((predict_naive(inputs, outputs)), (predict_lasso(inputs, outputs)),
-            (predict_ridge(inputs, outputs))), (predict_random(inputs, outputs))
+    naive = predict_naive(np.copy(inputs), np.copy(outputs))
+    lasso = predict_lasso(np.copy(inputs), np.copy(outputs))
+    ridge = predict_ridge(np.copy(inputs), np.copy(outputs))
+    random = predict_random(np.copy(inputs), np.copy(outputs))
+    return naive, lasso, ridge, random
 
 
 def predict_naive(inputs, outputs):
@@ -47,13 +50,13 @@ def predict_naive(inputs, outputs):
         accuracy.append(prediction[i] == outputs[i])
         true_pos.append(prediction[i] == 1 and outputs[i] == 1)
         false_pos.append(prediction[i] == 1 and outputs[i] == 0)
-    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
+    precision1 = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     accuracy_scores = float(sum(accuracy) / len(accuracy))
     if not os.path.isdir(outpath):
         os.mkdir(outpath)
-    with open(outpath + "summary.txt",'a') as f:
-        f.write(f"Naive predictions\nAccuracy: {accuracy_scores} | Precision: {precision}\n")
-    return accuracy_scores, precision
+    with open(outpath + "summary.txt",'w') as f:
+        f.write(f"Naive predictions\nAccuracy: {accuracy_scores} | Precision: {precision1}\n")
+    return accuracy_scores, precision1
 
 
 def predict_lasso(inputs, outputs):
@@ -72,11 +75,11 @@ def predict_lasso(inputs, outputs):
         accuracy.append(predictions[i] == outputs[i])
         true_pos.append(predictions[i] == 1 and outputs[i] == 1)
         false_pos.append(predictions[i] == 1 and outputs[i] == 0)
-    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
+    precision2 = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     score = model.score(inputs, outputs)
     with open(outpath + "summary.txt",'a') as f:
-        f.write(f"Lasso predictions\nScore: {score} | Precision: {precision}\n")
-    return score, precision
+        f.write(f"Lasso predictions\nScore: {score} | Precision: {precision2}\n")
+    return score, precision2
 
 
 def predict_ridge(inputs, outputs):
@@ -94,11 +97,11 @@ def predict_ridge(inputs, outputs):
         accuracy.append(predictions[i] == outputs[i])
         true_pos.append(predictions[i] == 1 and outputs[i] == 1)
         false_pos.append(predictions[i] == 1 and outputs[i] == 0)
-    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
+    precision3 = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     score = model.score(inputs, outputs)
     with open(outpath + "summary.txt",'a') as f:
-        f.write(f"Ridge predictions\nAccuracy: {score} | Precision: {precision}\n")
-    return score, precision
+        f.write(f"Ridge predictions\nAccuracy: {score} | Precision: {precision3}\n")
+    return score, precision3
 
 
 def predict_random(inputs, outputs):
@@ -115,8 +118,8 @@ def predict_random(inputs, outputs):
         accuracy.append(predictions[i] == outputs[i])
         true_pos.append(predictions[i] == 1 and outputs[i] == 1)
         false_pos.append(predictions[i] == 1 and outputs[i] == 0)
-    precision = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
+    precision4 = float(sum(true_pos) / (sum(true_pos) + sum(false_pos)))
     accuracy = float(sum(accuracy) / len(accuracy))
     with open(outpath + "summary.txt",'a') as f:
-        f.write(f"Ridge predictions\nAccuracy: {accuracy} | Precision: {precision}\n")
-    return accuracy, precision
+        f.write(f"Random predictions\nAccuracy: {accuracy} | Precision: {precision4}\n")
+    return accuracy, precision4

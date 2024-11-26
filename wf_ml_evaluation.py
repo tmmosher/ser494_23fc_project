@@ -3,10 +3,11 @@ Author: Trenton Mosher
 Description: Splits the data into two sets, trains the model(s), and evaluates it
 """
 import os
+import random
 
 import numpy as np
 import wf_ml_prediction
-
+os.environ["NUMPY_EXPERIMENTAL_ARRAY_FUNCTION"] = "0"
 
 def split_training(filepath, training_name="training", testing_name="testing", percent=0.8):
     """
@@ -20,6 +21,7 @@ def split_training(filepath, training_name="training", testing_name="testing", p
     percent = 0.8 if percent > 1 or percent < 0 else percent
     # load csv file into memory, split, and return both data structures as a tuple
     csv_data = get_processed_data(filepath)
+    random.shuffle(csv_data)
     split_ind = int(len(csv_data) * percent)
     # save data sets to file
     save_dataset(csv_data[:split_ind], training_name)
