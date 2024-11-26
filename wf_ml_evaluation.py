@@ -1,6 +1,6 @@
 """
 Author: Trenton Mosher
-Description: Splits the data into two sets, trains the model, and evaluates it
+Description: Splits the data into two sets, trains the model(s), and evaluates it
 """
 import os
 
@@ -25,11 +25,13 @@ def split_training(filepath, training_name="training", testing_name="testing", p
     save_dataset(csv_data[split_ind:], testing_name)
     return csv_data[:split_ind], csv_data[split_ind:]
 
+
 def save_dataset(dataset, filename):
     output_folder = os.getcwd() + "/models/"
     if not os.path.isdir(output_folder):
         os.mkdir(output_folder)
     np.save(output_folder + filename, np.asarray(dataset))
+
 
 def get_processed_data(filename):
     import csv
@@ -45,14 +47,14 @@ def get_processed_data(filename):
         csv_data.pop(0)
     return [list(map(lambda a: int(a), row)) for row in csv_data]
 
-def generate_naive_model():
+
+def generate_naive_model(in_array, out_array):
     import wf_ml_training as tr
-    training, testing = split_training("processed_misinfo_sharing_combined.csv",
-                   training_name="naive_training", testing_name="naive_testing")
-    inputs = np.asarray([row[:8] for row in training])
-    outputs = np.asarray([[row[8]] for row in training])
-    weights, loss, intercept = tr.lg_naive_gradient_descent(inputs, outputs, 0.01, "naive_model")
-    print("Loss: ", loss)
+    weights, loss, intercept = tr.lg_naive_gradient_descent(in_array, out_array, 0.01, "naive_model")
+    print("Naive logistic regression model generated.")
 
 if __name__ == "__main__":
-    generate_naive_model()
+    training, testing = split_training("processed_misinfo_sharing_combined.csv")
+    inputs = np.asarray([row[:8] for row in training])
+    outputs = np.asarray([[row[8]] for row in training])
+    generate_naive_model(inputs, outputs)

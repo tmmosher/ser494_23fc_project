@@ -2,7 +2,7 @@
 Author: Trenton Mosher
 Description: Trains the logistic regression model(s)
 """
-import math
+from sklearn.linear_model import LogisticRegression
 
 import numpy as np
 from wf_ml_evaluation import save_dataset
@@ -65,3 +65,33 @@ def get_loss(output, pred_output):
     """
     size = len(output)
     return -(1 / size) * np.sum(output * np.log(pred_output) + (1 - output) * np.log(1 - pred_output))
+
+
+def lg_sklearn_lasso_regression(inputs, outputs, filename):
+    """
+    Generates an SKLearn logistic regression model using an L1 penalty
+    :param inputs: input as numpy array
+    :param outputs: outputs as numpy array
+    :param filename: Filename for output. Do not include the extension, please.
+    :return: tuple containing (weights, intercept) for prediction. Saves the weights & intercept to file.
+    """
+    model = LogisticRegression(penalty="l1", tol=1e-6)
+    inputs = standardize(inputs)
+    model.fit(inputs, outputs)
+    save_dataset(np.append(model.coef_[0], model.intercept_[0]), filename)
+    return model.coef_[0], model.intercept_[0]
+
+
+def lg_sklearn_ridge_regression(inputs, outputs, filename):
+    """
+    Generates an SKLearn logistic regression model using an L2 penalty
+    :param inputs: input as numpy array
+    :param outputs: outputs as numpy array
+    :param filename: Filename for output. Do not include the extension, please.
+    :return: tuple containing (weights, intercept) for prediction. Saves the weights & intercept to file.
+    """
+    model = LogisticRegression(penalty="l2", tol=1e-6)
+    inputs = standardize(inputs)
+    model.fit(inputs, outputs)
+    save_dataset(np.append(model.coef_[0], model.intercept_[0]), filename)
+    return model.coef_[0], model.intercept_[0]
