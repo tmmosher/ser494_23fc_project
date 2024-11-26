@@ -7,7 +7,6 @@ import random
 
 import numpy as np
 import wf_ml_prediction
-os.environ["NUMPY_EXPERIMENTAL_ARRAY_FUNCTION"] = "0"
 
 def split_training(filepath, training_name="training", testing_name="testing", percent=0.8):
     """
@@ -93,4 +92,4 @@ if __name__ == "__main__":
     generate_naive_model(inputs, outputs)
     generate_lasso_model(inputs, outputs)
     generate_ridge_model(inputs, outputs)
-    print(wf_ml_prediction.predict(testing))
+    wf_ml_prediction.predict(testing)

@@ -10,7 +10,6 @@ from sklearn.linear_model import LogisticRegression
 
 import numpy as np
 from wf_ml_evaluation import save_model
-os.environ["NUMPY_EXPERIMENTAL_ARRAY_FUNCTION"] = "0"
 def standardize(inputs):
     return (inputs - np.mean(inputs, axis=0)) / np.std(inputs, axis=0)
 
@@ -47,13 +46,14 @@ def lg_naive_gradient_descent(inputs: np.array, outputs: np.array, alpha, filena
     save_model(weights, loss, intercept, filename)
     return weights, loss, intercept
 
-
-def logistic_function(x, slowdown=False):
+def logistic_function(x):
     """
     logistic function as described on p 41 of the regression notes
     :param x: input value
     :return: conditional probability value
     """
+    # vals = []
+    # vals = 1 / (1 + np.exp(-x))
     return 1 / (1 + np.exp(-x))
 
 def get_loss(output, pred_output):

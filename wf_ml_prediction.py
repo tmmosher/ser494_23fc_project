@@ -9,8 +9,8 @@ import pickle
 import time
 
 import numpy as np
+import wf_ml_training as tr
 
-os.environ["NUMPY_EXPERIMENTAL_ARRAY_FUNCTION"] = "0"
 filepath = os.getcwd() + "/models/"
 outpath = os.getcwd() + "/evaluations/"
 
@@ -20,13 +20,20 @@ def predict(testing):
     :param testing: Testing data set
     :return: a tuple containing scores for each model
     """
-    inputs = np.asarray([row[:8] for row in testing])
+    inputs = tr.standardize(np.asarray([row[:8] for row in testing]))
     outputs = np.asarray([[row[8]] for row in testing])
+    # use these i/o's for testing the row 1
+    # inputs = tr.standardize(np.asarray(testing[384][:8]))
+    # outputs = np.asarray(testing[384][8])
     naive = predict_naive(np.copy(inputs), np.copy(outputs))
     lasso = predict_lasso(np.copy(inputs), np.copy(outputs))
     ridge = predict_ridge(np.copy(inputs), np.copy(outputs))
     random = predict_random(np.copy(inputs), np.copy(outputs))
     return naive, lasso, ridge, random
+
+
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
 
 
 def predict_naive(inputs, outputs):
@@ -43,7 +50,7 @@ def predict_naive(inputs, outputs):
     true_pos = []
     false_pos = []
     val = np.dot(inputs, weights) + intercept
-    y = tr.logistic_function(val)
+    y = sigmoid(val)
     prediction = (y > 0.5).astype(int)
     # create prediction accuracy
     for i in range(len(prediction)):
