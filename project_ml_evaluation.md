@@ -22,7 +22,7 @@ we don't flag innocent subjects for misinformation.
 ### Alternative 1: LASSO Logistic Regression
 **Construction:** Use SKLearn's Logistic Regression class with an added L1 penalty.
 
-**Evaluation:** Overall, this was the best model of the bunch when tested with every metric. Accuracy averaging at ~77%, though
+**Evaluation:** Overall, this was the better model of the SKLearn's when tested with every metric. Accuracy averaging at ~77%, though
 precision varies wildly. Precision averages about 53%.
 
 ### Alternative 2: Ridge Logistic Regression
@@ -33,15 +33,15 @@ precision varies wildly. Precision averages about 53%.
 ### Alternative 3: Baseline random prediction
 **Construction:** Simply fill a list with random values of 0 or 1.
 
-**Evaluation:** Accuracy as expected (~50%) over the course of several runs. Precision is the worst at 24% on average. 
-
-
-## Visualization
-### Visual N
-**Analysis:** TODO
-
-(duplicate above as many times as needed; remove this line when done)
+**Evaluation:** Accuracy as expected (~50%) over the course of several runs. Precision is the worst at 24% on average.
 
 ## Best Model
 
-**Model:** LASSO
+**Model:** Personal model. The accuracy is virtually identical to the SKLearn models, but the precision is
+on average slightly better.
+
+While this model doesn't match the research objectives, I have found
+that the objectives themselves are flawed. After building the models, it's clear that age and trust
+in social media are extremely poor predictors of how often someone will share misinformation. Only using
+those two features in a regression model leads to a model that is virtually useless. Therefore, the addition of
+the other features is justifiable.
