@@ -1,6 +1,6 @@
 """
 Author: Trenton Mosher
-Description: Acquires data from internet and unpacks it in local storage.
+Description: Acquires data from internet and unpacks it in memory.
 """
 # site url for download is https://zenodo.org/records/4557828/files/covid-misinfo-videos.csv.gz?download=1
 
