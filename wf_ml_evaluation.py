@@ -83,8 +83,7 @@ def generate_lasso_model(in_array, out_array):
 def engineer_feature(csv_data):
     """
     Engineers a dataset with similarly populated samples. Need to change the 'conditions' object
-    manually to isolated different variables. Yes, I could have done it dynamically and it
-    wouldn't have been much harder. Whatever! :3
+    manually to isolated different variables. 
     :param csv_data: list
     :return: a sample data set
     """
